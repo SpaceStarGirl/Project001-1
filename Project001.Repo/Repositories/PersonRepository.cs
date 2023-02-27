@@ -49,10 +49,27 @@ namespace Project001.Repo.Repositories
 
             return await context.Person.ToListAsync();
         }
+        
+        public async Task<Person> addPerson(Person person)
+        {
+            await context.Person.FirstOrDefaultAsync(x => x.id == person.id);
+            if (person.id == null)
+            {
+                return null;
+            }
+            return person;
+            
+        }
 
         public Task<Person> updatePerson(Person person)
         {
-            throw new NotImplementedException();
+            return null;
+        }
+
+        
+        public Task<Person> DeletePerson(Person person)
+        {
+            return null;
         }
     }
 }

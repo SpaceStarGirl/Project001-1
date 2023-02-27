@@ -33,9 +33,10 @@ namespace Project001.API.Controllers
         }
         #endregion eee
         [HttpGet("GetPersons")]
-        public async Task<ActionResult<List<Person>>> GetPersons()
+        public async Task<IActionResult> GetPersons1()
         {
-            return await personRepository.getPersons();
+            PersonRepository repo = new PersonRepository();
+            return Ok(await personRepository.getPersons());
         }
 
     }

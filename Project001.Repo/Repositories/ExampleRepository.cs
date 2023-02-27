@@ -12,7 +12,7 @@ namespace Project001.Repo.Repositories
     /// 3) skal vi ikke have initialiseret databasen??
     /// 4) vi skal have en metode vi kan teste af i vores controller
     /// </summary>
-    internal class ExampleRepository
+    public class ExampleRepository
     {
     }
 }
