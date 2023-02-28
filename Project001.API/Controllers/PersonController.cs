@@ -38,6 +38,26 @@ namespace Project001.API.Controllers
             PersonRepository repo = new PersonRepository();
             return Ok(await personRepository.getPersons());
         }
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreatePerson(Person person)
+        {
+            var temp = await personRepository.createPerson(person);
+            return Ok(person);
+            
+
+        }
+        [HttpGet("ByID")]
+        public async Task<ActionResult> GetPersonById(int id)
+        {
+            var persons = await personRepository.getPersonById(id);
+            return Ok(persons);
+        }
+        [HttpDelete]
+        public async Task<IActionResult> DeletePerson(int id)
+        {
+            var temp = await personRepository.deletePerson(id);
+            return Ok(id);
+        }
 
     }
 }

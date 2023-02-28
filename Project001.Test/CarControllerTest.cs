@@ -1,4 +1,7 @@
-﻿using Moq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Moq;
+using Project001.API.Controllers;
 using Project001.Repo.Interface;
 using Project001.Repo.Models;
 using System;
@@ -11,13 +14,13 @@ namespace Project001.Test
 {
     public class CarControllerTest
     {
-        private readonly CarControllerTest carController;
+        private readonly CarController carController;
 
-        private readonly Mock<ICarRepository> repoCar = new();
-
+        private readonly Mock<ICarRepository> repo = new();
+        
         public CarControllerTest()
         {
-            this.carController = new CarControllerTest();
+            this.carController = new CarController(repo.Object);
         }
         [Fact]
 
@@ -29,12 +32,15 @@ namespace Project001.Test
                 new Car {Id = 2, Brand = "Mazda"},
                 new Car {Id = 3, Brand = "Ford"}
             };
-            repoCar.Setup(c => c.getCars()).ReturnsAsync(cars);
-
-            var res = await carController
-            Assert.Equal(3, res.Cars.Count);
+            repo.Setup(c => c.getCars()).ReturnsAsync(cars);
+            var result = await carController.GetCars1();
+            ////var res = await carController.GetCars();
+            var statuscode = (IStatusCodeActionResult)result;
+            Assert.Equal(200, statuscode.StatusCode);
 
         }
+
+        
 
         
     }

@@ -14,11 +14,17 @@ namespace Project001.Repo.Repositories
         // how do I use the Database? // ORM
         private DatabaseContext context { get; set; } = new();
 
-        #region start
-        public Task<Person> createPerson(Person person)
+        public PersonRepository(DatabaseContext d)
         {
-            throw new NotImplementedException();
+            context = d; // runtime
+            //context = new DatabaseContext(); //compiletime
         }
+
+        public PersonRepository()
+        {
+        }
+        #region start
+
 
         public Task DeletePerson(int id)
         {
@@ -29,9 +35,10 @@ namespace Project001.Repo.Repositories
         // make a method that can be called
         public string getName() { return "I am the Jedi"; }
 
-        public Task<Person> getPersonById(int id)
+        public async Task<Person> getPersonById(int id)
         {
-            throw new NotImplementedException();
+            return await context.Person.FirstOrDefaultAsync(obj=> obj.id == id);
+            //throw new NotImplementedException();
         }
 
         public Task<Person> getPersonByName(string name)
@@ -49,27 +56,35 @@ namespace Project001.Repo.Repositories
 
             return await context.Person.ToListAsync();
         }
-        
-        public async Task<Person> addPerson(Person person)
+
+        public async Task<Person> createPerson(Person person)
         {
-            await context.Person.FirstOrDefaultAsync(x => x.id == person.id);
-            if (person.id == null)
-            {
-                return null;
-            }
+
+            context.Add(person);
+            context.SaveChangesAsync();
             return person;
-            
+
         }
 
         public Task<Person> updatePerson(Person person)
         {
             return null;
         }
-
-        
-        public Task<Person> DeletePerson(Person person)
+        public async Task<Person> deletePerson(int id)
         {
-            return null;
+            var temp = await context.Person.FindAsync(id);
+
+            if( temp != null)
+            {
+                context.Person.Remove(temp);
+                await context.SaveChangesAsync();
+                return temp;
+
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
